@@ -41,6 +41,11 @@
     
     CGFloat euslope;
     CGFloat initRow;
+    
+    // (Leon_Huang+ [RTSP Player]
+    NSTimer *removePlayerTimer;
+    NSTimer *restartPlayerTimer;
+    // Leon_Huang-)
 }
 
 // (Leon_Huang+ [RTSP Player]
@@ -72,21 +77,7 @@
     [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_INFO];
 #endif
     
-    [IJKFFMoviePlayerController checkIfFFmpegVersionMatch:YES];
-    // [IJKFFMoviePlayerController checkIfPlayerVersionMatch:YES major:1 minor:0 micro:0];
-    
-    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
-    
-    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.url withOptions:options];
-    self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    self.player.view.frame = self.view.bounds;
-    self.player.scalingMode = IJKMPMovieScalingModeAspectFit;
-    self.player.shouldAutoplay = YES;
-    
-    self.view.autoresizesSubviews = YES;
-    [self.view addSubview:self.player.view];
-    //[self.view bringSubviewToFront:self.button];
-    [self.view sendSubviewToBack:self.player.view];
+    [self setupPlayer];
     // Leon_Huang-)
     
     // red line
@@ -130,12 +121,20 @@
         NSLog(@"Device orientation is %ld", [UIApplication sharedApplication].statusBarOrientation);
         // Add the code which you want
     }
+    
+    removePlayerTimer = [NSTimer scheduledTimerWithTimeInterval:(60.0 * 10.0) target:self selector:@selector(removePlayer:) userInfo:nil repeats:YES];
     // Leon_Huang-)
 }
 
 // (Leon_Huang+ [RTSP Player]
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    
+    [removePlayerTimer invalidate];
+    removePlayerTimer = nil;
+    
+    [restartPlayerTimer invalidate];
+    restartPlayerTimer = nil;
     
     [self.player shutdown];
     [self removeMovieNotificationObservers];
@@ -148,6 +147,45 @@
 }
 
 // (Leon_Huang+ [RTSP Player]
+- (void)dealloc {
+    NSLog(@"Dealloc ADAS View Controller");
+}
+
+#pragma mark - tool methods
+- (void)setupPlayer {
+    [IJKFFMoviePlayerController checkIfFFmpegVersionMatch:YES];
+    // [IJKFFMoviePlayerController checkIfPlayerVersionMatch:YES major:1 minor:0 micro:0];
+    
+    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+    
+    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.url withOptions:options];
+    self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    self.player.view.frame = self.view.bounds;
+    self.player.scalingMode = IJKMPMovieScalingModeAspectFit;
+    self.player.shouldAutoplay = YES;
+    
+    self.view.autoresizesSubviews = YES;
+    [self.view addSubview:self.player.view];
+    //[self.view bringSubviewToFront:self.button];
+    [self.view sendSubviewToBack:self.player.view];
+}
+
+- (void)removePlayer:(NSTimer *)timer {
+    NSLog(@"Times up, remove player");
+    
+    [self.player.view removeFromSuperview];
+    [self.player shutdown];
+    
+    restartPlayerTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(restartPlayer:) userInfo:nil repeats:NO];
+}
+
+- (void)restartPlayer:(NSTimer *)timer {
+    NSLog(@"Times up, restart player");
+    
+    [self setupPlayer];
+    [self.player prepareToPlay];
+}
+
 #pragma mark - Observers methods
 - (void)loadStateDidChange:(NSNotification *)notification
 {

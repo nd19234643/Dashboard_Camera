@@ -524,11 +524,39 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kD-B1-uzF">
+                                <rect key="frame" x="172" y="421" width="30" height="30"/>
+                                <state key="normal" title="up"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SCu-NL-u86">
+                                <rect key="frame" x="168" y="475" width="38" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="38" id="GlN-DM-YMT"/>
+                                    <constraint firstAttribute="height" constant="30" id="msl-24-k8h"/>
+                                </constraints>
+                                <state key="normal" title="down"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LhG-dl-8CW">
+                                <rect key="frame" x="229" y="450" width="32" height="30"/>
+                                <state key="normal" title="right"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lWT-YE-dTY">
+                                <rect key="frame" x="106" y="450" width="30" height="30"/>
+                                <state key="normal" title="left"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2SL-mZ-JzT">
+                                <rect key="frame" x="294" y="450" width="55" height="30"/>
+                                <state key="normal" title="Capture"/>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="4kD-B1-uzF" firstAttribute="centerX" secondItem="Quq-10-jwg" secondAttribute="centerX" id="0Po-uv-4yV"/>
+                            <constraint firstItem="SCu-NL-u86" firstAttribute="top" secondItem="4kD-B1-uzF" secondAttribute="bottom" constant="24" id="1S0-He-Oy1"/>
                             <constraint firstItem="C8x-Zy-hQl" firstAttribute="top" secondItem="OaL-AD-hgB" secondAttribute="bottom" constant="8" id="1wd-fU-dmE"/>
+                            <constraint firstItem="SCu-NL-u86" firstAttribute="leading" secondItem="lWT-YE-dTY" secondAttribute="trailing" constant="32" id="2q7-bX-6Sy"/>
                             <constraint firstItem="E05-I9-BhQ" firstAttribute="leading" secondItem="um2-Bi-FIX" secondAttribute="leadingMargin" id="6L5-PW-vMO"/>
+                            <constraint firstItem="SCu-NL-u86" firstAttribute="centerX" secondItem="Quq-10-jwg" secondAttribute="centerX" id="6db-1p-nbt"/>
                             <constraint firstItem="EHt-vJ-zkm" firstAttribute="top" secondItem="UcV-1z-Cwi" secondAttribute="bottom" constant="228" id="7q1-pw-RN2">
                                 <variation key="widthClass=compact" constant="100"/>
                             </constraint>
@@ -538,6 +566,8 @@
                             <constraint firstItem="B3L-eC-LJb" firstAttribute="top" secondItem="dZh-Aw-Gjh" secondAttribute="bottom" constant="15" id="CJt-vL-9rY"/>
                             <constraint firstItem="OaL-AD-hgB" firstAttribute="trailing" secondItem="um2-Bi-FIX" secondAttribute="trailingMargin" id="DrH-DF-gAs"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Quq-10-jwg" secondAttribute="trailing" constant="-16" id="FMM-cI-ySd"/>
+                            <constraint firstItem="2SL-mZ-JzT" firstAttribute="top" secondItem="LhG-dl-8CW" secondAttribute="top" id="GIj-6c-uNI"/>
+                            <constraint firstItem="2SL-mZ-JzT" firstAttribute="leading" secondItem="LhG-dl-8CW" secondAttribute="trailing" constant="33" id="Gar-iR-tIN"/>
                             <constraint firstItem="OaL-AD-hgB" firstAttribute="leading" secondItem="um2-Bi-FIX" secondAttribute="leadingMargin" id="HNb-4H-lgi"/>
                             <constraint firstAttribute="centerX" secondItem="C8x-Zy-hQl" secondAttribute="centerX" id="IUn-q5-SeK"/>
                             <constraint firstItem="5X5-HS-bP9" firstAttribute="top" secondItem="dZh-Aw-Gjh" secondAttribute="bottom" constant="20" id="Mba-E8-Sg5"/>
@@ -545,6 +575,7 @@
                             <constraint firstItem="Quq-10-jwg" firstAttribute="leading" secondItem="um2-Bi-FIX" secondAttribute="leadingMargin" constant="-16" id="QZd-tH-h1W"/>
                             <constraint firstItem="OaL-AD-hgB" firstAttribute="top" secondItem="CPJ-yY-7SJ" secondAttribute="bottom" constant="8" id="QmB-6H-80X"/>
                             <constraint firstItem="f2H-ss-die" firstAttribute="top" secondItem="C8x-Zy-hQl" secondAttribute="bottom" constant="20" id="VjZ-kZ-U7Q"/>
+                            <constraint firstItem="SCu-NL-u86" firstAttribute="top" secondItem="LhG-dl-8CW" secondAttribute="bottom" constant="-5" id="WnG-bU-bgS"/>
                             <constraint firstItem="B3L-eC-LJb" firstAttribute="trailing" secondItem="um2-Bi-FIX" secondAttribute="trailingMargin" id="XKp-L6-da6"/>
                             <constraint firstItem="UcV-1z-Cwi" firstAttribute="top" secondItem="dZh-Aw-Gjh" secondAttribute="bottom" constant="50" id="ZBP-Ik-XgN">
                                 <variation key="widthClass=compact" constant="250"/>
@@ -554,7 +585,10 @@
                             <constraint firstItem="Quq-10-jwg" firstAttribute="top" secondItem="dZh-Aw-Gjh" secondAttribute="bottom" id="avO-Vx-twg"/>
                             <constraint firstItem="5X5-HS-bP9" firstAttribute="leading" secondItem="um2-Bi-FIX" secondAttribute="leadingMargin" id="bsc-88-aZc"/>
                             <constraint firstItem="CPJ-yY-7SJ" firstAttribute="trailing" secondItem="um2-Bi-FIX" secondAttribute="trailingMargin" id="dbV-J6-Dk3"/>
+                            <constraint firstItem="C8x-Zy-hQl" firstAttribute="top" secondItem="SCu-NL-u86" secondAttribute="bottom" constant="48" id="gVN-nU-DPM"/>
+                            <constraint firstItem="LhG-dl-8CW" firstAttribute="leading" secondItem="SCu-NL-u86" secondAttribute="trailing" constant="23" id="m1S-NN-tzi"/>
                             <constraint firstItem="hwX-fi-fIR" firstAttribute="trailing" secondItem="um2-Bi-FIX" secondAttribute="trailingMargin" id="pcP-UA-oEn"/>
+                            <constraint firstItem="SCu-NL-u86" firstAttribute="top" secondItem="lWT-YE-dTY" secondAttribute="bottom" constant="-5" id="qjM-pu-sb6"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -570,10 +604,11 @@
                                 <exclude reference="E05-I9-BhQ"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="FMM-cI-ySd"/>
+                                <exclude reference="QZd-tH-h1W"/>
+                                <exclude reference="avO-Vx-twg"/>
                                 <exclude reference="Mba-E8-Sg5"/>
                                 <exclude reference="bsc-88-aZc"/>
-                                <exclude reference="99m-0C-9yo"/>
-                                <exclude reference="VjZ-kZ-U7Q"/>
                                 <exclude reference="6L5-PW-vMO"/>
                                 <exclude reference="ZiM-vg-bmy"/>
                                 <exclude reference="am1-95-kJn"/>
@@ -591,9 +626,8 @@
                                 <exclude reference="QmB-6H-80X"/>
                                 <exclude reference="1wd-fU-dmE"/>
                                 <exclude reference="IUn-q5-SeK"/>
-                                <exclude reference="FMM-cI-ySd"/>
-                                <exclude reference="QZd-tH-h1W"/>
-                                <exclude reference="avO-Vx-twg"/>
+                                <exclude reference="99m-0C-9yo"/>
+                                <exclude reference="VjZ-kZ-U7Q"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -610,10 +644,11 @@
                                 <include reference="E05-I9-BhQ"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="FMM-cI-ySd"/>
+                                <include reference="QZd-tH-h1W"/>
+                                <include reference="avO-Vx-twg"/>
                                 <include reference="Mba-E8-Sg5"/>
                                 <include reference="bsc-88-aZc"/>
-                                <include reference="99m-0C-9yo"/>
-                                <include reference="VjZ-kZ-U7Q"/>
                                 <include reference="6L5-PW-vMO"/>
                                 <include reference="ZiM-vg-bmy"/>
                                 <include reference="am1-95-kJn"/>
@@ -631,9 +666,8 @@
                                 <include reference="QmB-6H-80X"/>
                                 <include reference="1wd-fU-dmE"/>
                                 <include reference="IUn-q5-SeK"/>
-                                <include reference="FMM-cI-ySd"/>
-                                <include reference="QZd-tH-h1W"/>
-                                <include reference="avO-Vx-twg"/>
+                                <include reference="99m-0C-9yo"/>
+                                <include reference="VjZ-kZ-U7Q"/>
                             </mask>
                         </variation>
                     </view>
