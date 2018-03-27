@@ -21,7 +21,7 @@
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-    NSInteger sensitvity = [userDefaults integerForKey:@"sensitvity"] ;
+    NSInteger sensitvity = [userDefaults integerForKey:@"sensitvity"];
     if (0 == sensitvity) {
         sensitvity = 1;
     }
@@ -33,19 +33,19 @@
     }
     [self setSleepingTime: sleepingTime];
     
-    NSInteger movieDuration = [userDefaults integerForKey:@"movieDuration"] ;
+    NSInteger movieDuration = [userDefaults integerForKey:@"movieDuration"];
     if (0 == movieDuration) {
         movieDuration = 1;
     }
     [self setMovieDuration:movieDuration];
     
-    NSInteger evSetting = [userDefaults integerForKey:@"evSetting"] ;
+    NSInteger evSetting = [userDefaults integerForKey:@"evSetting"];
     if (0 == evSetting) {
         evSetting = 0;
     }
     [self setEvSetting:evSetting];
     
-    NSString* mailAddress =  [userDefaults stringForKey:@"mailAddress"];
+    NSString* mailAddress = [userDefaults stringForKey:@"mailAddress"];
     if (nil == mailAddress) {
         mailAddress = [NSString stringWithFormat:@""];
     }
@@ -57,7 +57,7 @@
     }
     [self setSmsAddress: smsAddress];
     
-    NSInteger ldwfcw = [userDefaults integerForKey:@"ldwfcw"] ;
+    NSInteger ldwfcw = [userDefaults integerForKey:@"ldwfcw"];
     if (0 == ldwfcw) {
         ldwfcw = 1;
     }

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 Fang Huai An. All rights reserved.
 //
 
-#import "ADASViewController.h"
+#import <IJKMediaFramework/IJKMediaFramework.h> // Leon_Huang, [RTSP Player]
 
-#import "RTSPPlayer.h"
+#import "ADASViewController.h"
 #import "AppDelegate.h"
 #import "HttpRequestWorker.h"
 
@@ -17,12 +17,11 @@
     AppDelegate *appDelegate;
     
     IBOutlet UIImageView *imageView;
-    RTSPPlayer *video;
     float lastFrameTime;
     NSTimer *nextFrameTimer;
     
-    IBOutlet UIImageView *redView ;
-    IBOutlet UIImageView *greenView ;
+    IBOutlet UIImageView *redView;
+    IBOutlet UIImageView *greenView;
     IBOutlet UILabel *lbEuslope;
     IBOutlet UILabel *lbInitRow;
     IBOutlet UISegmentedControl *ldwFcwSensitivity;
@@ -33,95 +32,272 @@
     IBOutlet UIPanGestureRecognizer *redViewPan;
     IBOutlet UIPanGestureRecognizer *greenViewPan;
     
-    IBOutlet NSLayoutConstraint *redViewTopConstraint ;
-    IBOutlet NSLayoutConstraint *greenViewTopConstraint ;
+    IBOutlet NSLayoutConstraint *redViewTopConstraint;
+    IBOutlet NSLayoutConstraint *greenViewTopConstraint;
     
-
-    Float64 outputFactor ;
-    int videoHeight ;
-    CGFloat videoY ;
-    CGFloat videoFactor;
+    Float64 outputFactor;
+    int videoHeight;
+    CGFloat videoY;
     
     CGFloat euslope;
     CGFloat initRow;
 }
 
+// (Leon_Huang+ [RTSP Player]
+@property(atomic,strong) NSURL *url;
+@property(atomic, retain) id<IJKMediaPlayback> player;
+// Leon_Huang-)
+
 @end
 
 @implementation ADASViewController
 
+#pragma mark - view controller life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.navigationController setNavigationBarHidden:NO];
     [self setTitle:@"ADAS"];
-    //
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    //
     
-    //video =[[RTSPPlayer alloc] initWithVideo:@"rtsp://192.168.1.254/xxx.mp4" usesTcp:NO];
+    // (Leon_Huang+ [RTSP Player]
+    self.url = [[NSURL alloc] initWithString:@"rtsp://192.168.1.254/sjcam.mov"];
+    //self.url = [NSURL URLWithString:@"rtsp://192.168.1.254/sjcam.mov"];
     
-    video =[[RTSPPlayer alloc] initWithVideo:@"rtsp://192.168.1.254/sjcam.mov" usesTcp:NO];
+#ifdef DEBUG
+    [IJKFFMoviePlayerController setLogReport:YES];
+    [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_DEBUG];
+#else
+    [IJKFFMoviePlayerController setLogReport:NO];
+    [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_INFO];
+#endif
     
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    videoFactor =  screenBounds.size.width / video.sourceWidth ;
+    [IJKFFMoviePlayerController checkIfFFmpegVersionMatch:YES];
+    // [IJKFFMoviePlayerController checkIfPlayerVersionMatch:YES major:1 minor:0 micro:0];
     
-    video.outputWidth = video.sourceWidth *  videoFactor; // 1/4
-    video.outputHeight =  video.sourceHeight *  videoFactor ; // 1/4
-    videoHeight = video.outputHeight;
-    NSLog(@" video.sourceWidth:%d, video.sourceHeight:%d", video.sourceWidth, video.sourceHeight);
+    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+    
+    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.url withOptions:options];
+    self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    self.player.view.frame = self.view.bounds;
+    self.player.scalingMode = IJKMPMovieScalingModeAspectFit;
+    self.player.shouldAutoplay = YES;
+    
+    self.view.autoresizesSubviews = YES;
+    [self.view addSubview:self.player.view];
+    //[self.view bringSubviewToFront:self.button];
+    [self.view sendSubviewToBack:self.player.view];
+    // Leon_Huang-)
     
     // red line
-    
     
     // green line
     
     [imageView setContentMode:UIViewContentModeScaleAspectFit];
-    
-    [self playVideo:nil];
-    
 }
+
+// (Leon_Huang+ [RTSP Player]
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self installMovieNotificationObservers];
+    
+    [self.player prepareToPlay];
+}
+// Leon_Huang-)
 
 
 - (void)viewDidAppear:(BOOL)animated {
     
     [super viewDidAppear:animated];
     
-    
-    // image's Left Top
-    videoY = (imageView.frame.size.height - video.outputHeight)/2;
-    
-    NSLog(@"imageView.frame.size.height:%f, video.outputHeight:%d, videoY:%f", imageView.frame.size.height, video.outputHeight, videoY);
-    
-    redViewTopConstraint.constant = (imageView.frame.size.height / 2) - 9;
-    greenViewTopConstraint.constant = video.outputHeight / 4 - 18;
-
-    outputFactor = 1080.0f / video.outputHeight;
+    // (Leon_Huang+ [RTSP Player]
+    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait)
+    {
+        NSLog(@"Device orientation is Portrait");
+        CGRect windowRect = [[UIScreen mainScreen] bounds];
+        int videoWidth = windowRect.size.width;
+        videoHeight = videoWidth * (windowRect.size.width / windowRect.size.height);
+        videoY = (imageView.frame.size.height - videoHeight)/2;
+        
+        redViewTopConstraint.constant = (imageView.frame.size.height / 2) - 9;
+        greenViewTopConstraint.constant = videoHeight / 4 - 18;
+        
+        outputFactor = 1080.0f / videoHeight;
+    }
+    else
+    {
+        NSLog(@"Device orientation is %ld", [UIApplication sharedApplication].statusBarOrientation);
+        // Add the code which you want
+    }
+    // Leon_Huang-)
 }
 
+// (Leon_Huang+ [RTSP Player]
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [self.player shutdown];
+    [self removeMovieNotificationObservers];
+}
+// Leon_Huang-)
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+// (Leon_Huang+ [RTSP Player]
+#pragma mark - Observers methods
+- (void)loadStateDidChange:(NSNotification *)notification
+{
+    //    MPMovieLoadStateUnknown        = 0,
+    //    MPMovieLoadStatePlayable       = 1 << 0,
+    //    MPMovieLoadStatePlaythroughOK  = 1 << 1, // Playback will be automatically started in this state when shouldAutoplay is YES
+    //    MPMovieLoadStateStalled        = 1 << 2, // Playback will be automatically paused in this state, if started
+    
+    IJKMPMovieLoadState loadState = _player.loadState;
+    
+    if ((loadState & IJKMPMovieLoadStatePlaythroughOK) != 0) {
+        NSLog(@"loadStateDidChange: IJKMPMovieLoadStatePlaythroughOK: %d\n", (int)loadState);
+    } else if ((loadState & IJKMPMovieLoadStateStalled) != 0) {
+        NSLog(@"loadStateDidChange: IJKMPMovieLoadStateStalled: %d\n", (int)loadState);
+    } else {
+        NSLog(@"loadStateDidChange: ???: %d\n", (int)loadState);
+    }
+}
+
+- (void)moviePlayBackDidFinish:(NSNotification *)notification
+{
+    //    MPMovieFinishReasonPlaybackEnded,
+    //    MPMovieFinishReasonPlaybackError,
+    //    MPMovieFinishReasonUserExited
+    int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
+    
+    switch (reason)
+    {
+        case IJKMPMovieFinishReasonPlaybackEnded:
+            NSLog(@"playbackStateDidChange: IJKMPMovieFinishReasonPlaybackEnded: %d\n", reason);
+            break;
+            
+        case IJKMPMovieFinishReasonUserExited:
+            NSLog(@"playbackStateDidChange: IJKMPMovieFinishReasonUserExited: %d\n", reason);
+            break;
+            
+        case IJKMPMovieFinishReasonPlaybackError:
+            NSLog(@"playbackStateDidChange: IJKMPMovieFinishReasonPlaybackError: %d\n", reason);
+            break;
+            
+        default:
+            NSLog(@"playbackPlayBackDidFinish: ???: %d\n", reason);
+            break;
+    }
+}
+
+- (void)mediaIsPreparedToPlayDidChange:(NSNotification *)notification
+{
+    NSLog(@"mediaIsPreparedToPlayDidChange\n");
+}
+
+- (void)moviePlayBackStateDidChange:(NSNotification *)notification
+{
+    //    MPMoviePlaybackStateStopped,
+    //    MPMoviePlaybackStatePlaying,
+    //    MPMoviePlaybackStatePaused,
+    //    MPMoviePlaybackStateInterrupted,
+    //    MPMoviePlaybackStateSeekingForward,
+    //    MPMoviePlaybackStateSeekingBackward
+    
+    switch (_player.playbackState)
+    {
+        case IJKMPMoviePlaybackStateStopped: {
+            NSLog(@"IJKMPMoviePlayBackStateDidChange %d: stoped", (int)_player.playbackState);
+            break;
+        }
+        case IJKMPMoviePlaybackStatePlaying: {
+            NSLog(@"IJKMPMoviePlayBackStateDidChange %d: playing", (int)_player.playbackState);
+            break;
+        }
+        case IJKMPMoviePlaybackStatePaused: {
+            NSLog(@"IJKMPMoviePlayBackStateDidChange %d: paused", (int)_player.playbackState);
+            break;
+        }
+        case IJKMPMoviePlaybackStateInterrupted: {
+            NSLog(@"IJKMPMoviePlayBackStateDidChange %d: interrupted", (int)_player.playbackState);
+            break;
+        }
+        case IJKMPMoviePlaybackStateSeekingForward:
+        case IJKMPMoviePlaybackStateSeekingBackward: {
+            NSLog(@"IJKMPMoviePlayBackStateDidChange %d: seeking", (int)_player.playbackState);
+            break;
+        }
+        default: {
+            NSLog(@"IJKMPMoviePlayBackStateDidChange %d: unknown", (int)_player.playbackState);
+            break;
+        }
+    }
+}
+
+#pragma mark - Install Movie Notifications
+
+/* Register observers for the various movie object notifications. */
+-(void)installMovieNotificationObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadStateDidChange:)
+                                                 name:IJKMPMoviePlayerLoadStateDidChangeNotification
+                                               object:_player];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(moviePlayBackDidFinish:)
+                                                 name:IJKMPMoviePlayerPlaybackDidFinishNotification
+                                               object:_player];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(mediaIsPreparedToPlayDidChange:)
+                                                 name:IJKMPMediaPlaybackIsPreparedToPlayDidChangeNotification
+                                               object:_player];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(moviePlayBackStateDidChange:)
+                                                 name:IJKMPMoviePlayerPlaybackStateDidChangeNotification
+                                               object:_player];
+}
+
+#pragma mark - Remove Movie Notification Handlers
+
+/* Remove the movie notification observers from the movie object. */
+-(void)removeMovieNotificationObservers
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:IJKMPMoviePlayerLoadStateDidChangeNotification object:_player];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:IJKMPMoviePlayerPlaybackDidFinishNotification object:_player];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:IJKMPMediaPlaybackIsPreparedToPlayDidChangeNotification object:_player];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:IJKMPMoviePlayerPlaybackStateDidChangeNotification object:_player];
+}
+// Leon_Huang-)
+
+#pragma mark - Gesture
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     
     NSLog(@"touchesEnded");
 }
-
 
 - (IBAction)handlePan:(UIPanGestureRecognizer *)recognizer {
     
     CGPoint translation = [recognizer translationInView:self.view];
     //recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
     
-    NSLog(@"translation.y:%f", translation.y) ;
+    NSLog(@"translation.y:%f", translation.y);
     
-    CGFloat locationY = recognizer.view.center.y + translation.y  ;
+    CGFloat locationY = recognizer.view.center.y + translation.y;
     
-    if (locationY < videoY )
+    if (locationY < videoY)
     {
-        locationY = videoY +3 ;
+        locationY = videoY + 3;
     }
-    else if((locationY > (videoY + videoHeight)) && (translation.y > 0 ))
+    else if ((locationY > (videoY + videoHeight)) && (translation.y > 0))
     {
-        locationY = videoY + videoHeight + 3 ;
+        locationY = videoY + videoHeight + 3;
     }
     
     
@@ -163,11 +339,11 @@
         
         if (locationY < videoY)
         {
-            greenViewTopConstraint.constant = videoY - redViewTopConstraint.constant + 3 ;
+            greenViewTopConstraint.constant = videoY - redViewTopConstraint.constant + 3;
         }
         else if((locationY > (videoY + videoHeight)) && (translation.y > 0))
         {
-            greenViewTopConstraint.constant = (videoY + videoHeight) - redViewTopConstraint.constant  - 3;
+            greenViewTopConstraint.constant = (videoY + videoHeight) - redViewTopConstraint.constant - 3;
         }
         else
         {
@@ -202,48 +378,7 @@
      */
 }
 
-- (IBAction)playVideo:(id)sender {
-    lastFrameTime = -1;
-    
-    // seek to 0.0 seconds
-    [video seekTime:0.0];
-    
-    [nextFrameTimer invalidate];
-    nextFrameTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 // 1.0/30
-                                                           target:self
-                                                         selector:@selector(displayNextFrame:)
-                                                         userInfo:nil
-                                                          repeats:YES];
-}
-
-#define LERP(A,B,C) ((A)*(1.0-C)+(B)*C)
-
-- (void)displayNextFrame:(NSTimer *)timer
-{
-    NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
-    if (![video stepFrame])
-    {
-        [timer invalidate];
-        [video closeAudio];
-        return;
-    }
-    imageView.image = video.currentImage;
-    float frameTime = 1.0/([NSDate timeIntervalSinceReferenceDate] - startTime);
-    if (lastFrameTime<0)
-    {
-        lastFrameTime = frameTime;
-    }
-    else
-    {
-        lastFrameTime = LERP(frameTime, lastFrameTime, 0.8);
-    }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
+#pragma mark - Events trigger
 - (IBAction)ldwFcwSensitivityValueChanged:(id)sender {
 
     NSString *ldwFcw = [NSString stringWithFormat:@"sensitivity %d", (int)ldwFcwSensitivity.selectedSegmentIndex]; // sensitivity 0

@@ -31,7 +31,6 @@
     IBOutlet UIImageView *greenView ;
     IBOutlet UIPanGestureRecognizer *redViewPan;
     IBOutlet UIPanGestureRecognizer *greenViewPan;
-    
 }
 
 @end
@@ -60,7 +59,7 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
      [menuView setHidden:YES];
 }
 
-- (void) viewDidAppear:(BOOL)animated{
+- (void)viewDidAppear:(BOOL)animated {
     
     [super viewDidAppear:animated];
     
@@ -75,12 +74,12 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
 
 #pragma mark - 
 
-- (IBAction) handlePan :(UIPanGestureRecognizer *) recognizer {
+- (IBAction)handlePan:(UIPanGestureRecognizer *)recognizer {
     
     CGPoint translation = [recognizer translationInView:self.view];
     //recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
     
-    CGFloat yLocation = recognizer.view.center.y + translation.y ;
+    CGFloat yLocation = recognizer.view.center.y + translation.y;
     
     NSLog(@"yLocation:%f", yLocation);
     
@@ -112,8 +111,7 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
 
 
 #pragma mark - Buttons' Event
-
-- (IBAction) btnMenuClicked : (UIButton *) sender {
+- (IBAction)btnMenuClicked:(UIButton *)sender {
     
     if ([menuView isHidden]) {
         [menuView setHidden:NO];
@@ -125,9 +123,7 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
 
 
 #pragma mark - Video
-
-
-- (BOOL) initialVideoInputDevice{
+- (BOOL)initialVideoInputDevice {
 
     captureSession = [[AVCaptureSession alloc] init];
 
@@ -148,7 +144,7 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
                 return NO;
             }
         }
-        else{
+        else {
             NSLog(@"initialVideoInputDevice failed:%@", [error localizedDescription]);
             return NO;
         }
@@ -166,17 +162,17 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
             if ([captureSession canAddInput:audioInput]) {
                 [captureSession addInput:audioInput];
             }
-            else{
+            else {
                 NSLog(@"initialVideoInputDevice failed:%@", [error localizedDescription]);
                 return NO;
             }
         }
-        else{
+        else {
             return NO;
         }
         
     }
-    else{
+    else {
         return NO;
     }
     
@@ -218,28 +214,28 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
 
 #pragma mark AVCaptureVideoDataOutputSampleBufferDelegate
 
-- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
 
 }
 
 #pragma mark AVCaptureFileOutputRecordingDelegate
 
-- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error {
 
 }
 
 #pragma mark - UITableViewDataSource and UITableViewDelegate
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [menuItems count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     return 44.0f;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     MenuItemCellView *cell =(MenuItemCellView *) [tableView dequeueReusableCellWithIdentifier:MenuItemCellViewIdentifier forIndexPath:indexPath];
     
@@ -254,7 +250,7 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
     
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (NO == [menuView isHidden]) {
@@ -298,26 +294,19 @@ static NSString *MenuItemCellViewIdentifier = @"MenuItemCellView";
     
     if ([segue.identifier isEqualToString:@"moveToADASViewSegue"]) {
         
-        
     }
     
     if ([segue.identifier isEqualToString:@"moveToSettingViewSegue"]) {
-        
         
     }
     
     if ([segue.identifier isEqualToString:@"moveToFileViewSegue"]) {
         
-        
     }
     
     if ([segue.identifier isEqualToString:@"moveToAboutViewSegue"]) {
         
-        
     }
-    
-    
 }
-
 
 @end

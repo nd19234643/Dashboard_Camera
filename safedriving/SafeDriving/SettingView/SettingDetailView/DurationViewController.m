@@ -39,9 +39,9 @@
     NSLog(@"sleepingTime: %ld", (long)appDelegate.sleepingTime);
     [pickerMovieDuration selectRow:appDelegate.sleepingTime inComponent:0 animated:YES];
     
-    // {Leon_Huang20170414+ [Fix bug: ]
+    // (Leon_Huang20170414+ [Fix bug: ]
     //[self pickerView:pickerMovieDuration didSelectRow:appDelegate.sleepingTime inComponent:0];
-    // Leon_Huang20170414-}
+    // Leon_Huang20170414-)
     
     
     [lbMovieDuration setText:[movieDurationList objectAtIndex:appDelegate.movieDuration]];
@@ -88,14 +88,14 @@
 
     NSString *urlString = [NSString stringWithFormat:@"http://192.168.1.254/?custom=1&cmd=2003&par=%d",(int)appDelegate.movieDuration + 1];
     
-    // {Leon_Huang20170418+ [Before sending http request, you must stop recording]
+    // (Leon_Huang20170418+ [Before sending http request, you must stop recording]
     NSString *response = [[HttpRequestWorker sharedWorker] requestWithUrl:@"http://192.168.1.254/?custom=1&cmd=2001&par=0"]; // Stop recording
     
     response = [[HttpRequestWorker sharedWorker] requestWithUrl:urlString];
     NSLog(@"response:%@", response);
     
     response = [[HttpRequestWorker sharedWorker] requestWithUrl:@"http://192.168.1.254/?custom=1&cmd=2001&par=1"]; // Start recording
-    // Leon_Huang20170418-}
+    // Leon_Huang20170418-)
     
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -32,13 +32,13 @@
     [self.navigationController setNavigationBarHidden:NO];
     [self setTitle:@"File"];
     
-    // {Leon_Huang20170413+ [Fix bug: Can't connect to http file server]
+    // (Leon_Huang20170413+ [Fix bug: Can't connect to http file server]
     //[fileView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.1.254/NOVATEK/MOVIE"]]];
     
     //[fileView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.1.254/?custom=1&cmd=3015"]]];
     
     //[fileView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://appspot.azurewebsites.net/ARTC/VideoFile.html"]]];
-    // Leon_Huang20170413-}
+    // Leon_Huang20170413-)
     
     [fileView setScalesPageToFit:YES];
     
@@ -53,7 +53,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-// {Leon_Huang20170413+ [Fix bug: Can't connect to http file server]
+// (Leon_Huang20170413+ [Fix bug: Can't connect to http file server]
 - (IBAction)clickedVideoButton:(id)sender {
     
     [fileView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.1.254/WINWISE/MOVIE"]]];
@@ -68,7 +68,7 @@
     self.videoButton.hidden = YES;
     self.photoButton.hidden = YES;
 }
-// Leon_Huang20170413-}
+// Leon_Huang20170413-)
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if(navigationType == UIWebViewNavigationTypeLinkClicked) {
@@ -100,7 +100,7 @@
                 
                 ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
                 
-                // {Leon_Huang20170413+ [Save photo to camera roll]
+                // (Leon_Huang20170413+ [Save photo to camera roll]
                 [library writeImageDataToSavedPhotosAlbum:fileData metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
                     // error handling
                     if (error != nil) {
@@ -110,7 +110,7 @@
                     
                     NSLog(@"assetURL: %@", assetURL); //assets-library://asset/asset.JPG?id=43BA67DA-B834-4473-95D5-61BEB58114D0&ext=JPG
                 }];
-                // Leon_Huang20170413-}
+                // Leon_Huang20170413-)
                 
                 [library writeVideoAtPathToSavedPhotosAlbum:movieUrl completionBlock:^(NSURL *assetURL, NSError *error){
                     
