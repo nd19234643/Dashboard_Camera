@@ -34,7 +34,7 @@
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     //
-    EvList = @[@"+2.0", @"+1.7", @"+1.3", @"+1.0", @"+0.7", @"+0.3", @"0", @"-1.3", @"-0.7", @"-1.0", @"-1.3", @"-1.7",@"-2.0"];
+    EvList = @[@"+2.0", @"+1.7", @"+1.3", @"+1.0", @"+0.7", @"+0.3", @"0", @"-0.3", @"-0.7", @"-1.0", @"-1.3", @"-1.7",@"-2.0"];
     
     //
     [pickerEV selectRow:appDelegate.evSetting inComponent:0 animated:YES];
@@ -83,8 +83,15 @@
     [userDefaults synchronize];
     
     NSString *urlString = [NSString stringWithFormat:@"http://192.168.1.254/?custom=1&cmd=2005&par=%d",(int) appDelegate.evSetting ];
-    NSString *response = [[HttpRequestWorker sharedWorker] requestWithUrl:urlString];
+    
+    // {Leon_Huang20170418+ [Before sending http request, you must stop recording]
+    NSString *response = [[HttpRequestWorker sharedWorker] requestWithUrl:@"http://192.168.1.254/?custom=1&cmd=2001&par=0"]; // Stop recording
+    
+    response = [[HttpRequestWorker sharedWorker] requestWithUrl:urlString];
     NSLog(@"response:%@", response );
+    
+    response = [[HttpRequestWorker sharedWorker] requestWithUrl:@"http://192.168.1.254/?custom=1&cmd=2001&par=1"]; // Start recording
+    // Leon_Huang20170418-}
     
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -83,36 +83,30 @@
 }
 
 
-- (void) viewDidAppear:(BOOL)animated{
+- (void)viewDidAppear:(BOOL)animated {
     
     [super viewDidAppear:animated];
     
     
     // image's Left Top
-    videoY = ((  imageView.frame.size.height - video.outputHeight  )/ 2 ) ;
+    videoY = (imageView.frame.size.height - video.outputHeight)/2;
     
     NSLog(@"imageView.frame.size.height:%f, video.outputHeight:%d, videoY:%f", imageView.frame.size.height, video.outputHeight, videoY);
     
-    redViewTopConstraint.constant = ( imageView.frame.size.height / 2 ) - 9 ;
-    greenViewTopConstraint.constant =  video.outputHeight  / 4 - 18 ;
+    redViewTopConstraint.constant = (imageView.frame.size.height / 2) - 9;
+    greenViewTopConstraint.constant = video.outputHeight / 4 - 18;
 
-    
-    outputFactor = 1080.0f / video.outputHeight   ;
-    
-
+    outputFactor = 1080.0f / video.outputHeight;
 }
 
 
-- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     
     NSLog(@"touchesEnded");
-
 }
 
 
-- (IBAction) handlePan :(UIPanGestureRecognizer *) recognizer {
-    
-    
+- (IBAction)handlePan:(UIPanGestureRecognizer *)recognizer {
     
     CGPoint translation = [recognizer translationInView:self.view];
     //recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
@@ -121,69 +115,70 @@
     
     CGFloat locationY = recognizer.view.center.y + translation.y  ;
     
-    if (locationY < videoY ) {
+    if (locationY < videoY )
+    {
         locationY = videoY +3 ;
     }
-    else if(( locationY > (videoY + videoHeight ) ) && (translation.y > 0 )){
+    else if((locationY > (videoY + videoHeight)) && (translation.y > 0 ))
+    {
         locationY = videoY + videoHeight + 3 ;
     }
     
     
-    recognizer.view.center = CGPointMake(recognizer.view.center.x , locationY );
+    recognizer.view.center = CGPointMake(recognizer.view.center.x, locationY);
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     
-    CGFloat innerY =  locationY - videoY - 3 ;
-    CGFloat phase = 1080  - ( innerY  * outputFactor ) ;
+    CGFloat innerY = locationY - videoY - 3;
+    CGFloat phase = 1080 - (innerY * outputFactor);
     
-    if( 123 == recognizer.view.tag ){
+    if (123 == recognizer.view.tag)
+    {
         euslope = phase;
         
         NSLog(@"redView locationY:%f;innerY:%f; euslope:%f", locationY, innerY, euslope);
         
-        if (locationY < videoY  ) {
-            redViewTopConstraint.constant = videoY  ;
+        if (locationY < videoY)
+        {
+            redViewTopConstraint.constant = videoY;
         }
-        else if(( locationY > (videoY + videoHeight ) ) && (translation.y > 0 )){
-            redViewTopConstraint.constant = videoY + videoHeight  ;
+        else if ((locationY > (videoY + videoHeight)) && (translation.y > 0))
+        {
+            redViewTopConstraint.constant = videoY + videoHeight;
         }
-        else{
-            redViewTopConstraint.constant += translation.y  ;
-            greenViewTopConstraint.constant -=  translation.y  ;
+        else {
+            redViewTopConstraint.constant += translation.y;
+            greenViewTopConstraint.constant -= translation.y;
         }
-        
         
         NSString *message = [NSString stringWithFormat:@"euslope %f", euslope];
         [lbEuslope setText:message];
         //[tcpWorker sendMessage:message];
-    
     }
-    else if(456 == recognizer.view.tag){
+    else if (456 == recognizer.view.tag)
+    {
         initRow = phase;
         
         NSLog(@"greenView locationY:%f;innerY:%f; initRow:%f", locationY, innerY, initRow);
         
         
-        if (locationY < videoY  ) {
+        if (locationY < videoY)
+        {
             greenViewTopConstraint.constant = videoY - redViewTopConstraint.constant + 3 ;
         }
-        else if(( locationY > (videoY + videoHeight ) ) && (translation.y > 0 )){
-            greenViewTopConstraint.constant = (videoY + videoHeight)  - redViewTopConstraint.constant  - 3 ;
+        else if((locationY > (videoY + videoHeight)) && (translation.y > 0))
+        {
+            greenViewTopConstraint.constant = (videoY + videoHeight) - redViewTopConstraint.constant  - 3;
         }
-        else{
-            //redViewTopConstraint.constant -= translation.y  ;
-            greenViewTopConstraint.constant +=  translation.y  ;
+        else
+        {
+            //redViewTopConstraint.constant -= translation.y;
+            greenViewTopConstraint.constant +=  translation.y;
         }
-        
-        
         
         NSString *message = [NSString stringWithFormat:@"initRow %f", initRow];
         [lbInitRow setText:message];
         //[tcpWorker sendMessage:message];
-
     }
-    
-    
-    
     
     /*
      if (recognizer.state == UIGestureRecognizerStateEnded) {
@@ -205,11 +200,9 @@
      
      }
      */
-    
 }
 
-
-- (IBAction) playVideo:(id) sender {
+- (IBAction)playVideo:(id)sender {
     lastFrameTime = -1;
     
     // seek to 0.0 seconds
@@ -221,24 +214,27 @@
                                                          selector:@selector(displayNextFrame:)
                                                          userInfo:nil
                                                           repeats:YES];
-
 }
 
 #define LERP(A,B,C) ((A)*(1.0-C)+(B)*C)
 
--(void)displayNextFrame:(NSTimer *)timer
+- (void)displayNextFrame:(NSTimer *)timer
 {
     NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
-    if (![video stepFrame]) {
+    if (![video stepFrame])
+    {
         [timer invalidate];
         [video closeAudio];
         return;
     }
     imageView.image = video.currentImage;
-    float frameTime = 1.0/([NSDate timeIntervalSinceReferenceDate]-startTime);
-    if (lastFrameTime<0) {
+    float frameTime = 1.0/([NSDate timeIntervalSinceReferenceDate] - startTime);
+    if (lastFrameTime<0)
+    {
         lastFrameTime = frameTime;
-    } else {
+    }
+    else
+    {
         lastFrameTime = LERP(frameTime, lastFrameTime, 0.8);
     }
 }
@@ -248,27 +244,30 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction) ldwFcwSensitivityValueChanged :(id)sender {
+- (IBAction)ldwFcwSensitivityValueChanged:(id)sender {
 
-    NSString *ldwFcw = [NSString stringWithFormat:@"sensitvity %d", (int)ldwFcwSensitivity.selectedSegmentIndex];
+    NSString *ldwFcw = [NSString stringWithFormat:@"sensitivity %d", (int)ldwFcwSensitivity.selectedSegmentIndex]; // sensitivity 0
+    
     [appDelegate.tcpWorker sendMessage:ldwFcw];
 }
 
-- (IBAction) switchADASOnOffValueChanged : (UISwitch *) sender {
+- (IBAction)switchADASOnOffValueChanged:(UISwitch *)sender {
     
     NSString *message;
     
-    if (switchADASOnOff.isOn) {
+    if (switchADASOnOff.isOn)
+    {
         message = [NSString stringWithFormat:@"ADAS 1"];
     }
-    else{
+    else
+    {
         message = [NSString stringWithFormat:@"ADAS 0"];
     }
     
     [appDelegate.tcpWorker sendMessage:message];
 }
 
-- (IBAction) btnConfirmClicked : (UIButton *) sender {
+- (IBAction)btnConfirmClicked:(UIButton *)sender {
     NSString *euslopeMessage = [NSString stringWithFormat:@"euslope %f", euslope];
     NSString *initRowMessage = [NSString stringWithFormat:@"initRow %f", initRow];
 

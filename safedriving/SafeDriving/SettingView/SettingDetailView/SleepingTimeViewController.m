@@ -72,7 +72,7 @@
 
 #pragma mark - Button's Event
 
-- (IBAction) btnConfirmClicked : (UIButton *) sender {
+- (IBAction)btnConfirmClicked:(UIButton *)sender {
     
     [appDelegate setSleepingTime:selectedRow];
     
@@ -81,8 +81,16 @@
     [userDefaults synchronize];
     
     NSString *urlString = [NSString stringWithFormat:@"http://192.168.1.254/?custom=1&cmd=3007&par=%d", (int)(appDelegate.sleepingTime + 1)];
-    NSString *response = [[HttpRequestWorker sharedWorker] requestWithUrl:urlString];
-    NSLog(@"response:%@", response );
+    
+    // {Leon_Huang20170418+ [Before sending http request, you must stop recording]
+    // http://192.168.1.254/?custom=1&cmd=2001&par=0 // stop
+    NSString *response = [[HttpRequestWorker sharedWorker] requestWithUrl:@"http://192.168.1.254/?custom=1&cmd=2001&par=0"]; // Stop recording
+    
+    response = [[HttpRequestWorker sharedWorker] requestWithUrl:urlString];
+    NSLog(@"response:%@", response);
+    
+    response = [[HttpRequestWorker sharedWorker] requestWithUrl:@"http://192.168.1.254/?custom=1&cmd=2001&par=1"]; // Start recording
+    // Leon_Huang20170418-}
     
     [self.navigationController popViewControllerAnimated:YES];
 }

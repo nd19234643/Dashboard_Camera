@@ -48,14 +48,12 @@ static NSString *ImageMenuItemCellViewIdentifier = @"ImageMenuItemCellView";
 }
 
 
-- (void) viewDidAppear:(BOOL)animated{
-
+- (void)viewDidAppear:(BOOL)animated {
     if (NO == appDelegate.showAlert) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"收到SOS警示，是否傳出訊息" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil];
         [alert setTag:101];
         [alert show];
     }
-
 }
 
 
@@ -172,7 +170,11 @@ static NSString *ImageMenuItemCellViewIdentifier = @"ImageMenuItemCellView";
     [picker addAttachmentData:myData mimeType:@"image/jpeg" fileName:@"sos"];
     
     // Fill out the email body text
-    NSString *emailBody = @"<p>It is SOS message !  <p><br /><a href=""http://maps.google.com/maps?q=24.060256,120.385684"">Map</a>";
+    // {Leon_Huang20170718+
+    //NSString *emailBody = @"<p>It is SOS message !  <p><br /><a href=""http://maps.google.com/maps?q=24.060256,120.385684"">Map</a>";
+    NSString *emailBody = @"<p>It is SOS message !  <p><br /><a href=""http://maps.google.com/maps?q=24.0759285,120.4101187"">Map</a>";
+    // Leon_Huang20170718-}
+    
     [picker setMessageBody:emailBody isHTML:YES];
     
     [self presentViewController:picker animated:YES completion:NULL];
@@ -219,7 +221,10 @@ static NSString *ImageMenuItemCellViewIdentifier = @"ImageMenuItemCellView";
     // composer view controller.
     
     [picker setSubject:@"SOS"];
-    [picker setBody:@"It is SOS message !  \nhttp://maps.google.com/maps?q=24.060256,120.385684"];
+    // {Leon_Huang20170718+
+    //[picker setBody:@"It is SOS message !  \nhttp://maps.google.com/maps?q=24.060256,120.385684"];
+    [picker setBody:@"It is SOS message !  \nhttp://maps.google.com/maps?q=24.0759285,120.4101187"];
+    // Leon_Huang20170718-}
     
     if ([appDelegate.smsAddress length] > 0) {
         [picker setRecipients:@[appDelegate.smsAddress] ];

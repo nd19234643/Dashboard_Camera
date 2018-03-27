@@ -76,7 +76,11 @@
     [picker addAttachmentData:myData mimeType:@"image/jpeg" fileName:@"sos"];
     
     // Fill out the email body text
-    NSString *emailBody = @"<p>It is SOS message !  <p><br /><a href=""http://maps.google.com/maps?q=24.060256,120.385684"">Map</a>";
+    // {Leon_Huang20170718+
+    //NSString *emailBody = @"<p>It is SOS message !  <p><br /><a href=""http://maps.google.com/maps?q=24.060256,120.385684"">Map</a>";
+    NSString *emailBody = @"<p>It is SOS message !  <p><br /><a href=""http://maps.google.com/maps?q=24.0759285,120.4101187"">Map</a>";
+    // Leon_Huang20170718-}
+    
     [picker setMessageBody:emailBody isHTML:YES];
     
     [self presentViewController:picker animated:YES completion:NULL];

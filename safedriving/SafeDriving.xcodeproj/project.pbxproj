@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		031A01571EB97D2800FD711D /* background_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 031A01561EB97D2800FD711D /* background_2.png */; };
 		8B441C671B8C16FA0011D1E7 /* SOS.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B441C661B8C16FA0011D1E7 /* SOS.jpg */; };
 		8B7E8ECC1C0B73D300B546B8 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7E8ECB1C0B73D300B546B8 /* AssetsLibrary.framework */; };
 		8B82887F1B8AC4B30037F7ED /* ImageMenuItemCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B82887E1B8AC4B30037F7ED /* ImageMenuItemCellView.m */; };
@@ -85,6 +86,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		031A01561EB97D2800FD711D /* background_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background_2.png; path = Images/Background/background_2.png; sourceTree = "<group>"; };
 		8B441C661B8C16FA0011D1E7 /* SOS.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = SOS.jpg; path = Images/Demo/SOS.jpg; sourceTree = "<group>"; };
 		8B7E8ECB1C0B73D300B546B8 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8B82887D1B8AC4B30037F7ED /* ImageMenuItemCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageMenuItemCellView.h; path = ProductView/Cell/ImageMenuItemCellView.h; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 		8B8288931B8ACA640037F7ED /* Background */ = {
 			isa = PBXGroup;
 			children = (
+				031A01561EB97D2800FD711D /* background_2.png */,
 				8B8288941B8ACA6F0037F7ED /* ARTC.png */,
 			);
 			name = Background;
@@ -835,7 +838,8 @@
 				TargetAttributes = {
 					8B8CCB401B84092F00135B8D = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = Z247G8X22D;
+						DevelopmentTeam = 2MWLA567K4;
+						ProvisioningStyle = Automatic;
 					};
 					8B8CCB591B84092F00135B8D = {
 						CreatedOnToolsVersion = 6.4;
@@ -895,6 +899,7 @@
 				8B9ABED71B86D9C2005A8D01 /* AppIcon29@2x.png in Resources */,
 				8B9ABED81B86D9C2005A8D01 /* AppIcon29@3x.png in Resources */,
 				8BF9CE541B84E76200D66B3B /* blue.png in Resources */,
+				031A01571EB97D2800FD711D /* background_2.png in Resources */,
 				8B9ABED91B86D9C2005A8D01 /* AppIcon40@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1064,6 +1069,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Huai An Fang (53TT37D6U8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2MWLA567K4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1088,9 +1095,10 @@
 					"-all_load",
 					"-Objc",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tripim.SafeDriving;
+				PRODUCT_BUNDLE_IDENTIFIER = com.winwise.SafeDriving;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b2e6bc96-11ec-453e-8cc0-507ad68b6f7f";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1099,6 +1107,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Huai An Fang (Z247G8X22D)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2MWLA567K4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1120,9 +1130,10 @@
 					"-all_load",
 					"-Objc",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tripim.SafeDriving;
+				PRODUCT_BUNDLE_IDENTIFIER = com.winwise.SafeDriving;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1d9b4336-9903-4855-b2ad-364165d3cc42";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
@@ -1204,6 +1215,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Huai An Fang (Z247G8X22D)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2MWLA567K4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1225,9 +1238,10 @@
 					"-all_load",
 					"-Objc",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tripim.SafeDriving;
+				PRODUCT_BUNDLE_IDENTIFIER = com.winwise.SafeDriving;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "98f8cbde-dbaa-4066-a494-63d74557a43e";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = AdHoc;
 		};
